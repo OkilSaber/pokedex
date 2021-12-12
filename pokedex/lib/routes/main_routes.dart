@@ -1,36 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/bloc/pokemon_list/bloc.dart';
+import 'package:pokedex/bloc/search/bloc.dart';
 
-// class NavigationRouteInterface {
-//   final Icon icon;
-//   final String label;
-//   final Widget widget;
-//   const NavigationRouteInterface(this.icon, this.label, this.widget);
-// }
+List<CupertinoTabView> pages = [
+  CupertinoTabView(
+    builder: (context) {
+      return CupertinoPageScaffold(
+        child: BlocProvider(
+          create: (_) => PokemonListBloc(),
+          child: const Text("tekt"),
+        ),
+      );
+    },
+  ),
+  CupertinoTabView(
+    builder: (context) {
+      return CupertinoPageScaffold(
+        child: BlocProvider(
+          create: (_) => SearchBloc(),
+          child: const Text("tekt"),
+        ),
+      );
+    },
+  ),
+];
 
-List<CupertinoTabView> navigationRoutes = [
-  CupertinoTabView(builder: (context) {
-    return const CupertinoPageScaffold(
-      child: Center(
-        child: Text("Products List"),
-      ),
-    );
-  }),
-  CupertinoTabView(builder: (context) {
-    return const CupertinoPageScaffold(
-      child: Center(
-        child: Text("Search"),
-      ),
-    );
-  }),
-  CupertinoTabView(builder: (context) {
-    return const CupertinoPageScaffold(
-      child: Center(
-        child: Text("Shopping Cart"),
-      ),
-    );
-  })
+List<BottomNavigationBarItem> items = [
+  const BottomNavigationBarItem(
+    icon: Icon(CupertinoIcons.ant_fill),
+    label: 'Pokemon List',
+  ),
+  const BottomNavigationBarItem(
+    icon: Icon(CupertinoIcons.search),
+    label: 'Search',
+  ),
 ];
 
 class MainRoutes extends StatefulWidget {
@@ -50,23 +55,10 @@ class HomeMainRouteState extends State<MainRoutes> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
-            label: 'Products',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.shopping_cart),
-            label: 'Cart',
-          ),
-        ],
+        items: items,
       ),
       tabBuilder: (context, index) {
-        return navigationRoutes[index];
+        return pages[index];
       },
     );
   }
