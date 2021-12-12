@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_list/bloc.dart';
 import 'package:pokedex/bloc/search/bloc.dart';
+import 'package:pokedex/ui/screens/pokemon_list.dart';
 
 List<CupertinoTabView> pages = [
   CupertinoTabView(
@@ -10,7 +11,7 @@ List<CupertinoTabView> pages = [
       return CupertinoPageScaffold(
         child: BlocProvider(
           create: (_) => PokemonListBloc(),
-          child: const Text("tekt"),
+          child: const PokemonListScreen(),
         ),
       );
     },
