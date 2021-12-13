@@ -1,4 +1,4 @@
-class PokemonSprites {
+class Sprites {
   String frontDefault;
   String frontShiny;
   String frontFemale;
@@ -8,7 +8,7 @@ class PokemonSprites {
   String backFemale;
   String backShinyFemale;
 
-  PokemonSprites({
+  Sprites({
     required this.frontDefault,
     required this.frontShiny,
     required this.frontFemale,
@@ -19,8 +19,8 @@ class PokemonSprites {
     required this.backShinyFemale,
   });
 
-  factory PokemonSprites.fromJson(Map<String, dynamic> parsedJson) {
-    return PokemonSprites(
+  factory Sprites.fromJson(Map<String, dynamic> parsedJson) {
+    return Sprites(
       frontDefault: parsedJson["front_default"].toString(),
       frontShiny: parsedJson["front_shiny"].toString(),
       frontFemale: parsedJson["front_female"].toString(),

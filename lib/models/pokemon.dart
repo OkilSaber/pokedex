@@ -1,4 +1,5 @@
-import 'package:pokedex/models/pokemon_sprites.dart';
+import 'package:pokedex/models/pokemon_type.dart';
+import 'package:pokedex/models/sprites.dart';
 
 class Pokemon {
   int id;
@@ -8,7 +9,8 @@ class Pokemon {
   int order;
   int weight;
   String locationAreaEncounters;
-  PokemonSprites sprites;
+  Sprites sprites;
+  List<PokemonType> types;
 
   Pokemon({
     required this.id,
@@ -19,9 +21,11 @@ class Pokemon {
     required this.order,
     required this.weight,
     required this.sprites,
+    required this.types,
   });
 
-  factory Pokemon.fromJson(Map<String, dynamic> parsedJson) {
+  factory Pokemon.fromJson(
+      Map<String, dynamic> parsedJson, List<PokemonType> types) {
     return Pokemon(
       id: parsedJson["id"],
       baseExperience: parsedJson["base_experience"],
@@ -30,7 +34,8 @@ class Pokemon {
       name: parsedJson["name"].toString(),
       order: parsedJson["order"],
       weight: parsedJson["weight"],
-      sprites: PokemonSprites.fromJson(parsedJson["sprites"]),
+      sprites: Sprites.fromJson(parsedJson["sprites"]),
+      types: types,
     );
   }
 }

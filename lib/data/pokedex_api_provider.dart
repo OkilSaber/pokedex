@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pokedex/models/pokemon.dart';
+import 'package:pokedex/models/pokemon_type.dart';
 
 class PokedexApiProvider {
   final String baseUrl = "https://pokeapi.co/api/v2";
@@ -26,6 +27,23 @@ class PokedexApiProvider {
 
   Future<Pokemon> getPokemonFromUrl(String url) async {
     final response = await http.get(Uri.parse(url));
-    return Pokemon.fromJson(json.decode(response.body));
+    final jsonResponse = json.decode(response.body);
+    final List<PokemonType> types =
+        await getPokemonTypes(jsonResponse["types"]);
+    return Pokemon.fromJson(jsonResponse, types);
+  }
+
+  Future<List<PokemonType>> getPokemonTypes(List<dynamic> parsedJson) async {
+    final List<PokemonType> types = [];
+    for (var element in parsedJson) {
+      final response =
+          await http.get(Uri.parse(element["type"]["url"].toString()));
+      final decodedResp = json.decode(response.body);
+      types.add(PokemonType(
+          id: decodedResp["id"],
+          slot: element["slot"],
+          name: element["type"]["name"]));
+    }
+    return types;
   }
 }
