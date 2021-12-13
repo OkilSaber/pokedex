@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/bloc/pokemon_list/bloc.dart';
 import 'package:pokedex/models/pokemon.dart';
 import 'package:pokedex/ui/widgets/components/pokemon_card.dart';
 
@@ -18,20 +19,30 @@ class _PokemonListLoadedSuccessPageState
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: widget.pokemons.map<Widget>((pokemon) {
-              return GestureDetector(
-                onTap: () {},
-                child: SizedBox(
-                  width: 500.0,
-                  child: PokemonCard(pokemon: pokemon),
-                ),
-              );
-            }).toList(),
-          ),
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
         ),
+        slivers: <Widget>[
+          CupertinoSliverRefreshControl(onRefresh: () async {
+            BlocProvider.of<PokemonListBloc>(context)
+                .add(const PokemonListReloadEvent());
+          }),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              List.generate(
+                widget.pokemons.length,
+                (index) => GestureDetector(
+                  onTap: () {},
+                  child: SizedBox(
+                    width: 500.0,
+                    child: PokemonCard(pokemon: widget.pokemons[index]),
+                  ),
+                ),
+              ).toList(),
+            ),
+          ),
+        ],
       ),
     );
   }
