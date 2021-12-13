@@ -1,3 +1,5 @@
+import 'package:pokedex/models/pokemon_sprites.dart';
+
 class Pokemon {
   int id;
   String name;
@@ -6,6 +8,7 @@ class Pokemon {
   int order;
   int weight;
   String locationAreaEncounters;
+  PokemonSprites sprites;
 
   Pokemon({
     required this.id,
@@ -15,6 +18,7 @@ class Pokemon {
     required this.name,
     required this.order,
     required this.weight,
+    required this.sprites,
   });
 
   factory Pokemon.fromJson(Map<String, dynamic> parsedJson) {
@@ -26,6 +30,7 @@ class Pokemon {
       name: parsedJson["name"].toString(),
       order: parsedJson["order"],
       weight: parsedJson["weight"],
+      sprites: PokemonSprites.fromJson(parsedJson["sprites"]),
     );
   }
 }

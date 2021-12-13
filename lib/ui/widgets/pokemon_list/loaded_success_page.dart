@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:pokedex/models/pokemon.dart';
+import 'package:pokedex/ui/widgets/components/pokemon_card.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PokemonListLoadedSuccessPage extends StatefulWidget {
-  const PokemonListLoadedSuccessPage({Key? key}) : super(key: key);
+  final List<Pokemon> pokemons;
+  const PokemonListLoadedSuccessPage({Key? key, required this.pokemons})
+      : super(key: key);
 
   @override
   _PokemonListLoadedSuccessPageState createState() =>
@@ -13,6 +18,22 @@ class _PokemonListLoadedSuccessPageState
     extends State<PokemonListLoadedSuccessPage> {
   @override
   Widget build(BuildContext context) {
-    return const Center();
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: widget.pokemons.map<Widget>((pokemon) {
+              return GestureDetector(
+                onTap: () {},
+                child: SizedBox(
+                  width: 500.0,
+                  child: PokemonCard(pokemon: pokemon),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
   }
 }

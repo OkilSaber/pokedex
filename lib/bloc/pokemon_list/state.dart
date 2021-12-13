@@ -5,7 +5,8 @@ abstract class PokemonListState {
 }
 
 class PokemonListLoadedSuccessState extends PokemonListState {
-  const PokemonListLoadedSuccessState();
+  final List<Pokemon> pokemons;
+  const PokemonListLoadedSuccessState(this.pokemons);
 }
 
 class PokemonListLoadingState extends PokemonListState {

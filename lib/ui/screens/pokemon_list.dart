@@ -24,7 +24,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         if (state is PokemonListLoadingState) {
           return (const PokemonListLoadingPage());
         } else if (state is PokemonListLoadedSuccessState) {
-          return (const PokemonListLoadedSuccessPage());
+          return (PokemonListLoadedSuccessPage(pokemons: state.pokemons));
         } else if (state is PokemonListLoadErrorState) {
           return (PokemonListLoadErrorPage(error: state.cause));
         } else {
