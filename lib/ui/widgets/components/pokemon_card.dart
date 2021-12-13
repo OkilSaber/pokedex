@@ -43,7 +43,17 @@ class PokemonCard extends StatelessWidget {
         child: Column(
           children: [
             Text(pokemon.name),
-            Image.network(pokemon.sprites.frontDefault)
+            Image.network(pokemon.sprites.frontDefault),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Type(s): "),
+                Text(pokemon.types[0].name),
+                pokemon.types.length == 2
+                    ? Text(" & ${pokemon.types[1].name}")
+                    : const Text(""),
+              ],
+            ),
           ],
         ),
       ),
