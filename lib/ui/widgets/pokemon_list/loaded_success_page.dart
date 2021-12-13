@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/pokemon.dart';
 import 'package:pokedex/ui/widgets/components/pokemon_card.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PokemonListLoadedSuccessPage extends StatefulWidget {
   final List<Pokemon> pokemons;
