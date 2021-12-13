@@ -35,7 +35,7 @@ class AppStructure extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('Cupertino Store'),
+        middle: Text('Pokedex'),
       ),
       child: MainRoutes(),
     );
