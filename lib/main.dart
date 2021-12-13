@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:pokedex/routes/main_routes.dart';
 
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context) {
           return DefaultTextStyle(
             style: CupertinoTheme.of(context).textTheme.textStyle,
-            child: const CupertinoStoreHomePage(),
+            child: const AppStructure(),
           );
         },
       ),
@@ -29,8 +28,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CupertinoStoreHomePage extends StatelessWidget {
-  const CupertinoStoreHomePage({Key? key}) : super(key: key);
+class AppStructure extends StatelessWidget {
+  const AppStructure({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
