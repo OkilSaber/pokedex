@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_list/bloc.dart';
 import 'package:pokedex/ui/widgets/pokemon_list/loaded_error_page.dart';
@@ -16,25 +15,22 @@ class PokemonListScreen extends StatefulWidget {
 class _PokemonListScreenState extends State<PokemonListScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: BlocListener<PokemonListBloc, PokemonListState>(
-        listener: (context, state) async {},
-        child: BlocBuilder<PokemonListBloc, PokemonListState>(
-            buildWhen: (PokemonListState previous, PokemonListState current) {
-          return (true);
-        }, builder: (context, state) {
-          if (state is PokemonListLoadingState) {
-            return (const PokemonListLoadingPage());
-          } else if (state is PokemonListLoadedSuccessState) {
-            return (const PokemonListLoadedSuccessPage());
-          } else if (state is PokemonListLoadErrorState) {
-            return (PokemonListLoadErrorPage(error: state.cause));
-          } else {
-            return (Container());
-          }
-        }),
-      ),
+    return BlocListener<PokemonListBloc, PokemonListState>(
+      listener: (context, state) async {},
+      child: BlocBuilder<PokemonListBloc, PokemonListState>(
+          buildWhen: (PokemonListState previous, PokemonListState current) {
+        return (true);
+      }, builder: (context, state) {
+        if (state is PokemonListLoadingState) {
+          return (const PokemonListLoadingPage());
+        } else if (state is PokemonListLoadedSuccessState) {
+          return (const PokemonListLoadedSuccessPage());
+        } else if (state is PokemonListLoadErrorState) {
+          return (PokemonListLoadErrorPage(error: state.cause));
+        } else {
+          return (Container());
+        }
+      }),
     );
   }
 }
