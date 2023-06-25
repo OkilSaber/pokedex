@@ -6,7 +6,6 @@ import 'package:pokedex/structs/pokemon.dart';
 const baseUrl = 'https://pokeapi.co/api/v2';
 const limit = 20;
 Future<List<Pokemon>> fetchList(int page) async {
-  print(page);
   final http.Response response = await http.get(
       Uri.parse("$baseUrl/pokemon/?limit=$limit&offset=${page * limit}"),
       headers: {

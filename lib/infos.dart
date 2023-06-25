@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pokedex/pokeapi.dart';
 
 class Infos extends StatefulWidget {
   const Infos({super.key});
@@ -14,9 +13,7 @@ class _InfosState extends State<Infos> {
     return Center(
       child: CupertinoButton(
         child: const Text("Test"),
-        onPressed: () {
-          print("test");
-        },
+        onPressed: () {},
       ),
     );
   }

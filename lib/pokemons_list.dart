@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:pokedex/pokeapi.dart' as PokeDex;
+import 'package:pokedex/pokeapi.dart' as poke_dex;
 import 'package:pokedex/pokemon_card.dart';
 import 'package:pokedex/structs/pokemon.dart';
 
@@ -38,14 +38,14 @@ class _PokemonsListState extends State<PokemonsList> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          PokeDex.fetchList(page).then((value) {
+          poke_dex.fetchList(page).then((value) {
             setState(() => _pokemons.addAll(value));
             Navigator.of(context).pop();
           });
 
           return const Scaffold(
             extendBodyBehindAppBar: true,
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.transparent,
             body: Center(
               child: CircularProgressIndicator(),
             ),
