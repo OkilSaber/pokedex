@@ -129,8 +129,11 @@ class _PokemonsListState extends State<PokemonsList> {
               );
             } else if (snapshot.hasError) {
               return const Text("Error");
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
-            return const Text("Loading...");
           },
         ),
       ),

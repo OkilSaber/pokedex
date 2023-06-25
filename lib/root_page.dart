@@ -12,10 +12,6 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   int _selectedIndex = 0;
-  final tabPages = <Widget>[
-    const PokemonsList(),
-    const Infos(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +19,13 @@ class _RootPageState extends State<RootPage> {
       backgroundColor: Colors.black,
       extendBody: true,
       extendBodyBehindAppBar: true,
-      body: tabPages[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: const <Widget>[
+          PokemonsList(),
+          Infos(),
+        ],
+      ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(

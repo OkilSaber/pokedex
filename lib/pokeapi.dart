@@ -29,7 +29,6 @@ Future<List<Future<Pokemon>>> fetchList(int page) async {
   );
   List<Future<Pokemon>> pokemons = [];
   for (var counter = 0; counter < max; counter += 200) {
-    print("counter: $counter");
     response = await http.get(
       Uri.parse("$baseUrl/pokemon/?limit=50&offset=$counter"),
       headers: {
@@ -44,7 +43,7 @@ Future<List<Future<Pokemon>>> fetchList(int page) async {
     } else {
       throw Exception('Failed to load pokemons');
     }
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 100));
   }
   return pokemons;
 }
