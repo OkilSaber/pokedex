@@ -44,12 +44,13 @@ class Pokemon {
 
   // from json method
   factory Pokemon.fromJson(Map<String, dynamic> json) {
+    // print(json);
     List<String> types = [];
     json['types'].forEach((type) => types.add(type['type']['name']));
     return Pokemon(
       id: json['id'],
       name: json['name'],
-      baseExperience: json['base_experience'],
+      baseExperience: json["base_experience"] ?? 0,
       height: json['height'],
       isDefault: json['is_default'],
       order: json['order'],

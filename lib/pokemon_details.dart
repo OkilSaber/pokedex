@@ -190,30 +190,25 @@ class _PokemonDetailsState extends State<PokemonDetails> {
                   fontSize: 30,
                 ),
               ),
-              SizedBox(
-                height: 250,
-                child: ListView(
-                  children: widget.pokemon.stats.map((e) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: LinearPercentIndicator(
-                        center: Text(
-                          e.name.capitalize(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                        alignment: MainAxisAlignment.center,
-                        lineHeight: 30,
-                        percent: (e.baseStat / 252),
-                        backgroundColor: Colors.grey,
-                        progressColor: Colors.blue,
+              ...widget.pokemon.stats.map((e) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 5, bottom: 5),
+                  child: LinearPercentIndicator(
+                    center: Text(
+                      e.name.capitalize(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
                       ),
-                    );
-                  }).toList(),
-                ),
-              )
+                    ),
+                    alignment: MainAxisAlignment.center,
+                    lineHeight: 30,
+                    percent: (e.baseStat / 252),
+                    backgroundColor: Colors.grey,
+                    progressColor: Colors.blue,
+                  ),
+                );
+              }).toList(),
             ],
           ),
         ),

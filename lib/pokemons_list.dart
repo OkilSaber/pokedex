@@ -1,11 +1,9 @@
 import 'dart:ui';
-import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pokedex/pokeapi.dart' as poke_dex;
 import 'package:pokedex/pokemon_card.dart';
 import 'package:pokedex/structs/pokemon.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class PokemonsList extends StatefulWidget {
   const PokemonsList({super.key});
@@ -15,10 +13,9 @@ class PokemonsList extends StatefulWidget {
 }
 
 class _PokemonsListState extends State<PokemonsList> {
-  final List<Pokemon> _pokemons = [];
+  Future<List<Future<Pokemon>>> _pokemons = Future.value([]);
   int page = 0;
   final ScrollController _scrollController = ScrollController();
-  bool loading = true;
 
   @override
   void initState() {
@@ -29,9 +26,7 @@ class _PokemonsListState extends State<PokemonsList> {
     });
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge &&
-          _scrollController.position.pixels != 0 &&
-          !loading) {
-        setState(() => loading = true);
+          _scrollController.position.pixels != 0) {
         loadPokemonsPages(page);
         setState(() => page++);
       }
@@ -40,12 +35,7 @@ class _PokemonsListState extends State<PokemonsList> {
 
   void loadPokemonsPages(int page) {
     try {
-      poke_dex.fetchList(page).then((value) {
-        setState(() {
-          loading = false;
-          _pokemons.addAll(value);
-        });
-      });
+      _pokemons = poke_dex.fetchList(page);
     } on Exception catch (e) {
       showDialog(
         context: context,
@@ -99,16 +89,48 @@ class _PokemonsListState extends State<PokemonsList> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: GridView.builder(
-          controller: _scrollController,
-          itemCount: _pokemons.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10),
-          itemBuilder: (BuildContext context, int index) {
-            return PokemonCard(pokemon: _pokemons[index]);
+        child: FutureBuilder<List<Future<Pokemon>>>(
+          future: _pokemons,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return GridView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data?.length,
+                controller: _scrollController,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemBuilder: (context, index) {
+                  return FutureBuilder<Pokemon>(
+                    future: snapshot.data![index],
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return PokemonCard(
+                          pokemon: snapshot.data!,
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                          child: Icon(
+                            Icons.error_outline_rounded,
+                            color: Colors.white,
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              return const Text("Error");
+            }
+            return const Text("Loading...");
           },
         ),
       ),
