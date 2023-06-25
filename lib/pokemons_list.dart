@@ -16,6 +16,7 @@ class _PokemonsListState extends State<PokemonsList> {
   final List<Pokemon> _pokemons = [];
   int page = 0;
   final ScrollController _scrollController = ScrollController();
+  bool loading = true;
 
   @override
   void initState() {
@@ -26,7 +27,9 @@ class _PokemonsListState extends State<PokemonsList> {
     });
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge &&
-          _scrollController.position.pixels != 0) {
+          _scrollController.position.pixels != 0 &&
+          !loading) {
+        setState(() => loading = true);
         loadPokemonsPages(page);
         setState(() => page++);
       }
@@ -35,23 +38,12 @@ class _PokemonsListState extends State<PokemonsList> {
 
   void loadPokemonsPages(int page) {
     try {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          poke_dex.fetchList(page).then((value) {
-            setState(() => _pokemons.addAll(value));
-            Navigator.of(context).pop();
-          });
-
-          return const Scaffold(
-            extendBodyBehindAppBar: true,
-            backgroundColor: Colors.transparent,
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        },
-      );
+      poke_dex.fetchList(page).then((value) {
+        setState(() {
+          loading = false;
+          _pokemons.addAll(value);
+        });
+      });
     } on Exception catch (e) {
       showDialog(
         context: context,
@@ -79,10 +71,14 @@ class _PokemonsListState extends State<PokemonsList> {
       appBar: PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, 30),
         child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(25.0),
+            bottomRight: Radius.circular(25.0),
+          ),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
             child: Container(
-              color: Colors.transparent,
+              color: const Color.fromARGB(200, 100, 100, 100),
               child: AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
