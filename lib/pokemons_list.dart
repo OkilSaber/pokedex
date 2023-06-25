@@ -1,5 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:pokedex/pokeapi.dart' as PokeDex;
+import 'package:pokedex/pokemon_card.dart';
+import 'package:pokedex/structs/pokemon.dart';
 
 class PokemonsList extends StatefulWidget {
   const PokemonsList({super.key});
@@ -9,7 +13,63 @@ class PokemonsList extends StatefulWidget {
 }
 
 class _PokemonsListState extends State<PokemonsList> {
-  final List<int> _items = List<int>.generate(100, (int index) => index);
+  final List<Pokemon> _pokemons = [];
+  int page = 0;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      loadPokemonsPages(page);
+      setState(() => page++);
+    });
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge &&
+          _scrollController.position.pixels != 0) {
+        loadPokemonsPages(page);
+        setState(() => page++);
+      }
+    });
+  }
+
+  void loadPokemonsPages(int page) {
+    try {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          PokeDex.fetchList(page).then((value) {
+            setState(() => _pokemons.addAll(value));
+            Navigator.of(context).pop();
+          });
+
+          return const Scaffold(
+            extendBodyBehindAppBar: true,
+            backgroundColor: Colors.black,
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
+      );
+    } on Exception catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(e.toString()),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +99,20 @@ class _PokemonsListState extends State<PokemonsList> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: _items.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 50,
-            color: Colors.amber[100 * (index % 9)],
-            child: Center(
-              child: Text('Entry ${_items[index]}'),
-            ),
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: GridView.builder(
+          controller: _scrollController,
+          itemCount: _pokemons.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10),
+          itemBuilder: (BuildContext context, int index) {
+            return PokemonCard(pokemon: _pokemons[index]);
+          },
+        ),
       ),
     );
   }
