@@ -39,7 +39,7 @@ class _PokemonCardState extends State<PokemonCard> {
           children: [
             const SizedBox(height: 10),
             Text(
-              widget.pokemon.name.capitalize(),
+              "n°${widget.pokemon.id} ${widget.pokemon.name.capitalize()}",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -52,28 +52,31 @@ class _PokemonCardState extends State<PokemonCard> {
               // width: 288,
             ),
             const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ...widget.pokemon.types.map(
-                (type) => Container(
-                  margin: const EdgeInsets.only(right: 5),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(120, 248, 89, 137),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    type.capitalize(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ...widget.pokemon.types.map(
+                  (type) => Container(
+                    margin: const EdgeInsets.only(right: 5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(120, 248, 89, 137),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      type.capitalize(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ])
+              ],
+            ),
           ],
         ),
       ),

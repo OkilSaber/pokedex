@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pokedex/pokeapi.dart' as poke_dex;
 import 'package:pokedex/pokemon_card.dart';
 import 'package:pokedex/structs/pokemon.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class PokemonsList extends StatefulWidget {
   const PokemonsList({super.key});
@@ -69,7 +71,7 @@ class _PokemonsListState extends State<PokemonsList> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
       appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, 30),
+        preferredSize: Size(MediaQuery.of(context).size.width, 60),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(25.0),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pokedex/pokemon_card.dart';
 import 'package:pokedex/structs/pokemon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -58,8 +59,8 @@ class _PokemonDetailsState extends State<PokemonDetails> {
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.only(top: 70, bottom: 20),
-                height: 330,
+                margin: const EdgeInsets.only(top: 20, bottom: 20),
+                height: 375,
                 width: 300,
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(92, 255, 255, 255),
@@ -69,10 +70,10 @@ class _PokemonDetailsState extends State<PokemonDetails> {
                   children: [
                     const SizedBox(height: 10),
                     Text(
-                      widget.pokemon.name.capitalize(),
+                      "n°${widget.pokemon.id} ${widget.pokemon.name.capitalize()}",
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 25,
                       ),
                     ),
                     CarouselSlider(
@@ -126,6 +127,32 @@ class _PokemonDetailsState extends State<PokemonDetails> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...widget.pokemon.types.map(
+                          (type) => Container(
+                            margin: const EdgeInsets.only(right: 5),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(120, 248, 89, 137),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Text(
+                              type.capitalize(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: sprites.keys.map((key) {
                         final int index = sprites.keys.toList().indexOf(key);
                         return GestureDetector(
@@ -156,6 +183,37 @@ class _PokemonDetailsState extends State<PokemonDetails> {
                   ],
                 ),
               ),
+              const Text(
+                "Statistics",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
+              ),
+              SizedBox(
+                height: 250,
+                child: ListView(
+                  children: widget.pokemon.stats.map((e) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 5, bottom: 5),
+                      child: LinearPercentIndicator(
+                        center: Text(
+                          e.name.capitalize(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                        alignment: MainAxisAlignment.center,
+                        lineHeight: 30,
+                        percent: (e.baseStat / 252),
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              )
             ],
           ),
         ),

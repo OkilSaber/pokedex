@@ -1,4 +1,5 @@
 import 'package:pokedex/structs/sprites.dart';
+import 'package:pokedex/structs/stat.dart';
 
 class Pokemon {
   int id;
@@ -9,6 +10,7 @@ class Pokemon {
   int order;
   int weight;
   Sprites sprites;
+  List<Stat> stats;
   // List<Abilitiy> abilities;
   // List<PokemonForm> forms;
   // List<GameIndice> game_indices;
@@ -16,7 +18,6 @@ class Pokemon {
   // String location_area_encounters;
   // List<Move> moves;
   // Specie species;
-  // List<Stats> stats;
   List<String> types;
 
   Pokemon({
@@ -29,6 +30,7 @@ class Pokemon {
     required this.weight,
     required this.sprites,
     required this.types,
+    required this.stats,
     // this.abilities,
     // this.forms,
     // this.game_indices,
@@ -54,6 +56,7 @@ class Pokemon {
       weight: json['weight'],
       sprites: Sprites.fromJson(json['sprites']),
       types: types,
+      stats: json['stats'].map<Stat>((stat) => Stat.fromJson(stat)).toList(),
       // abilities: json['abilities'],
       // forms: json['forms'],
       // game_indices: json['game_indices'],
