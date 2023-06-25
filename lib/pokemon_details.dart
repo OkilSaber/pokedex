@@ -195,7 +195,7 @@ class _PokemonDetailsState extends State<PokemonDetails> {
                   padding: const EdgeInsets.only(top: 5, bottom: 5),
                   child: LinearPercentIndicator(
                     center: Text(
-                      e.name.capitalize(),
+                      "${e.name.capitalize()}: ${e.baseStat}",
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
